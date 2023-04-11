@@ -148,7 +148,7 @@ namespace Lab5
             return false;
         }
 
-        // TODO
+        // Finished in Class
         /// <summary>
         /// Searches the graph in a depth-first manner, creating a
         /// dictionary of the Node to Predessor Node links discovered by starting at the given node.
@@ -164,13 +164,36 @@ namespace Lab5
 
             Dictionary<Node, Node> pred = new Dictionary<Node, Node>();
 
+            //Initialize nodes and the pred dictionary
+            foreach(var node in Nodes)
+            {
+                pred[node] = null;
+                node.Color = Color.White;
+            }
+
+            DFSVisit( startingNode, pred);
+            
             return pred;
         }
 
-        // TODO
+        // Finished in Class
         private void DFSVisit(Node node, Dictionary<Node,Node> pred)
         {
+           Console.WriteLine();
+           node.Color = Color.Gray;
            
+           // Sort the neighbors so that we visit them in alphabetical order
+           node.Neighbors.Sort();
+
+           foreach(var neighbor in node.Neighbors)
+           {
+            if(neighbor.Color == Color.White)
+            {
+                pred[neighbor] = node;
+                DFSVisit(neighbor, pred);
+            }
+           }
+           node.Color = Color.Black;
         }
 
         // TODO
@@ -187,8 +210,42 @@ namespace Lab5
         {
             var resultDictionary = new Dictionary<Node, (Node pred, int dist)>();
 
+            // initialize the dictionary
+            foreach(var node in Nodes)
+            {
+                node.Color = Color.White;
+                resultDictionary[node] = (null, int.MaxValue);
+            }
+
+            // setup starting node 
+            startingNode.Color = Color.Gray;
+            resultDictionary[startingNode] = (null, 0);
+
+            // Q = empty queue
+            Queue<Node> queue = new Queue<Node>();
+            queue.Enqueue(startingNode);
+
+            // iteratively traverse the graph
+
+            while( queue.Count > 0)
+            {
+                // u = head(Q)
+                var node = queue.Peek();
+
+                foreach( var neighbor in node.Neighbors)
+                {
+                    if( neighbor.Color == Color.White) 
+                    {
+                        int distance = resultDictionary[node].ToTuple().Item2;
+                        resultDictionary[neighbor] = (node, distance+1);
+                        neighbor.Color = Color.Gray;
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
             
-            return resultDictionary;
+            queue.Dequeue();
+            node.Color = Color.Black;
         }
 
         // TODO
@@ -229,7 +286,6 @@ namespace Lab5
                     str += ", ";
                 }
 
-                str += ".";
                 str += Environment.NewLine;
             }
             return str;
