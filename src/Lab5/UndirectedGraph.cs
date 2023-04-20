@@ -149,12 +149,13 @@ namespace Lab5
         /// <returns> true if node1 is reachable through any path from node2.</returns>
         public bool IsReachable(string nodename1, string nodename2)
         {
-            ResetNodeColor();
-            DFS(GetNodeByName(nodename2));
-            
-            var node2 = GetNodeByName(nodename2);
-            
-            return node.color;
+            //ResetNodeColor();
+            //DFS(GetNodeByName(nodename2));
+
+            //var node2 = GetNodeByName(nodename2);
+
+            //return node.color;
+            return true; 
         }
 
         // Finished in Class
