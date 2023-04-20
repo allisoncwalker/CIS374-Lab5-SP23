@@ -150,8 +150,11 @@ namespace Lab5
         public bool IsReachable(string nodename1, string nodename2)
         {
             ResetNodeColor();
-
-            return false;
+            DFS(GetNodeByName(nodename2));
+            
+            var node2 = GetNodeByName(nodename2);
+            
+            return node.color;
         }
 
         // Finished in Class
