@@ -112,7 +112,7 @@ namespace Lab5
             return node;
         }
 
-        // TODO
+        // Finished
          /**
          * <summary> Returns the number of connected components in the graph .</summary>
          */
@@ -123,11 +123,17 @@ namespace Lab5
             {
                 int connectedComponents = 0;
 
-                // for all the nodes
-                //     if node is white
-                //        connectedComponents++
-                //        explore the neighbors
-                //        
+                ResetNodeColor();
+
+                foreach (Node n in Nodes)
+                {
+                    if (n.Color.Equals(Color.White))
+                    {
+                        DFS(n);
+                        connectedComponents++;
+                    }
+                }
+                ResetNodeColor();
 
                 return connectedComponents;
             }
@@ -144,11 +150,15 @@ namespace Lab5
         public bool IsReachable(string nodename1, string nodename2)
         {
             ResetNodeColor();
+            DFS(GetNodeByName(nodename2));
 
-            return false;
+            var node2 = GetNodeByName(nodename2);
+
+            return node.color;
+            return true; 
         }
 
-        // TODO
+        // Finished in class
         /// <summary>
         /// Searches the graph in a depth-first manner, creating a
         /// dictionary of the Node to Predessor Node links discovered by starting at the given node.
@@ -174,7 +184,7 @@ namespace Lab5
             return pred;
         }
 
-        // TODO
+        // Finished in class
         private void DFSVisit(Node node, Dictionary<Node,Node> pred)
         {
             Console.WriteLine(node);
