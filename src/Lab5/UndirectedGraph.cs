@@ -112,7 +112,7 @@ namespace Lab5
             return node;
         }
 
-        // TODO
+        // Finished
          /**
          * <summary> Returns the number of connected components in the graph .</summary>
          */
@@ -123,11 +123,17 @@ namespace Lab5
             {
                 int connectedComponents = 0;
 
-                // for all the nodes
-                //     if node is white
-                //        connectedComponents++
-                //        explore the neighbors
-                //        
+                ResetNodeColor();
+
+                foreach (Node n in Nodes)
+                {
+                    if (n.Color.Equals(Color.White))
+                    {
+                        DFS(n);
+                        connectedComponents++;
+                    }
+                }
+                ResetNodeColor();
 
                 return connectedComponents;
             }
@@ -248,7 +254,7 @@ namespace Lab5
             node.Color = Color.Black;
         }
 
-        // TODO
+        // Finished?
         /// <summary>
         /// 
         /// </summary>
@@ -257,12 +263,32 @@ namespace Lab5
         /// <returns></returns>
         private bool DFSVisit(Node currentNode, Node endingNode)
         {
-            // return true if endingNode is found
+            currentNode.Color = Color.Gray;
 
+            // return true if endingNode is found
+            if (currentNode == endingNode)
+            {
+                return true;
+            }
+
+            foreach (var neighbor in currentNode.Neighbors)
+            {
+                if (neighbor.Color == Color.White)
+                {
+                    var result = DFSVisit(neighbor, endingNode);
+                    if (result)
+                    {
+                        return result;
+                    }
+                }
+            }
             // return false if endingNode is NOT found after visiting ALL connected nodes
+
+            currentNode.Color = Color.Black;
 
             return false;
         }
+
 
         private void ResetNodeColor()
         {
