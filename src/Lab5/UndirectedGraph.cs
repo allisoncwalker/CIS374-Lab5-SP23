@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -149,16 +149,16 @@ namespace Lab5
         /// <returns> true if node1 is reachable through any path from node2.</returns>
         public bool IsReachable(string nodename1, string nodename2)
         {
-            //ResetNodeColor();
-            //DFS(GetNodeByName(nodename2));
+            ResetNodeColor();
+            DFS(GetNodeByName(nodename2));
 
-            //var node2 = GetNodeByName(nodename2);
+            var node2 = GetNodeByName(nodename2);
 
-            //return node.color;
+            return node.color;
             return true; 
         }
 
-        // Finished in Class
+        // Finished in class
         /// <summary>
         /// Searches the graph in a depth-first manner, creating a
         /// dictionary of the Node to Predessor Node links discovered by starting at the given node.
@@ -170,40 +170,38 @@ namespace Lab5
         /// as discovered by a DFS.</returns>
         public Dictionary<Node, Node> DFS(Node startingNode)
         {
-            ResetNodeColor();
-
             Dictionary<Node, Node> pred = new Dictionary<Node, Node>();
 
-            //Initialize nodes and the pred dictionary
-            foreach(var node in Nodes)
+            // intialize nodes and the pred dictionary
+            foreach( var node in Nodes)
             {
                 pred[node] = null;
                 node.Color = Color.White;
             }
 
-            DFSVisit( startingNode, pred);
-            
+            DFSVisit(startingNode, pred);
+
             return pred;
         }
 
-        // Finished in Class
+        // Finished in class
         private void DFSVisit(Node node, Dictionary<Node,Node> pred)
         {
-           Console.WriteLine();
-           node.Color = Color.Gray;
-           
-           // Sort the neighbors so that we visit them in alphabetical order
-           node.Neighbors.Sort();
+            Console.WriteLine(node);
+            node.Color = Color.Gray;
 
-           foreach(var neighbor in node.Neighbors)
-           {
-            if(neighbor.Color == Color.White)
+            // sort the neighbors so that we will visit in alphabetical order
+            node.Neighbors.Sort();
+
+            foreach ( var neighbor in node.Neighbors )
             {
-                pred[neighbor] = node;
-                DFSVisit(neighbor, pred);
+                if (neighbor.Color == Color.White)
+                {
+                    pred[neighbor] = node;
+                    DFSVisit(neighbor, pred);
+                }
             }
-           }
-           node.Color = Color.Black;
+            node.Color = Color.Black;
         }
 
         // TODO
@@ -227,24 +225,27 @@ namespace Lab5
                 resultDictionary[node] = (null, int.MaxValue);
             }
 
-            // setup starting node 
+            //setup starting node
             startingNode.Color = Color.Gray;
             resultDictionary[startingNode] = (null, 0);
 
-            // Q = empty queue
+            // Q = empty Queue
             Queue<Node> queue = new Queue<Node>();
             queue.Enqueue(startingNode);
 
             // iteratively traverse the graph
 
-            while( queue.Count > 0)
+            while( queue.Count > 0 )
             {
                 // u = head(Q)
                 var node = queue.Peek();
 
-                foreach( var neighbor in node.Neighbors)
+                // We should sort Neighbors first
+                node.Neighbors.Sort();
+
+                foreach( var neighbor in node.Neighbors )
                 {
-                    if( neighbor.Color == Color.White) 
+                    if( neighbor.Color == Color.White)
                     {
                         int distance = resultDictionary[node].ToTuple().Item2;
                         resultDictionary[neighbor] = (node, distance+1);
@@ -252,13 +253,17 @@ namespace Lab5
                         queue.Enqueue(neighbor);
                     }
                 }
+
+                queue.Dequeue();
+                node.Color = Color.Black;
+               
             }
+
             
-            queue.Dequeue();
-            node.Color = Color.Black;
+            return resultDictionary;
         }
 
-        // Finished?
+        // TODO
         /// <summary>
         /// 
         /// </summary>
@@ -267,32 +272,12 @@ namespace Lab5
         /// <returns></returns>
         private bool DFSVisit(Node currentNode, Node endingNode)
         {
-            currentNode.Color = Color.Gray;
-
             // return true if endingNode is found
-            if (currentNode == endingNode)
-            {
-                return true;
-            }
 
-            foreach (var neighbor in currentNode.Neighbors)
-            {
-                if (neighbor.Color == Color.White)
-                {
-                    var result = DFSVisit(neighbor, endingNode);
-                    if (result)
-                    {
-                        return result;
-                    }
-                }
-            }
             // return false if endingNode is NOT found after visiting ALL connected nodes
-
-            currentNode.Color = Color.Black;
 
             return false;
         }
-
 
         private void ResetNodeColor()
         {
@@ -316,6 +301,7 @@ namespace Lab5
                     str += ", ";
                 }
 
+                
                 str += Environment.NewLine;
             }
             return str;
