@@ -125,11 +125,11 @@ namespace Lab5
 
                 ResetNodeColor();
 
-                foreach (Node n in Nodes)
+                foreach (Node node in Nodes)
                 {
-                    if (n.Color.Equals(Color.White))
+                    if (node.Color.Equals(Color.White))
                     {
-                        DFS(n);
+                        DFS(node);
                         connectedComponents++;
                     }
                 }
@@ -139,7 +139,7 @@ namespace Lab5
             }
         }
 
-        // TODO
+        // Finished?
 
         /// <summary>
         /// 
@@ -149,13 +149,19 @@ namespace Lab5
         /// <returns> true if node1 is reachable through any path from node2.</returns>
         public bool IsReachable(string nodename1, string nodename2)
         {
+
+            Node node1 = GetNodeByName(nodename1);
+            Node node2 = GetNodeByName(nodename2);
             ResetNodeColor();
-            DFS(GetNodeByName(nodename2));
-
-            var node2 = GetNodeByName(nodename2);
-
-            return node.color;
-            return true; 
+            DFS(node1);
+            if (node2.Color == Color.White)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         // Finished in class
@@ -204,7 +210,7 @@ namespace Lab5
             node.Color = Color.Black;
         }
 
-        // TODO
+        // Finished?
         /// <summary>
         /// Searches the graph in a breadth-first manner, creating a
         /// dictionary of the Node to Predecessor and Distance discovered by starting at the given node.
@@ -263,7 +269,7 @@ namespace Lab5
             return resultDictionary;
         }
 
-        // TODO
+        // Finished?
         /// <summary>
         /// 
         /// </summary>
@@ -272,16 +278,34 @@ namespace Lab5
         /// <returns></returns>
         private bool DFSVisit(Node currentNode, Node endingNode)
         {
-            // return true if endingNode is found
+            currentNode.Color = Color.Gray;
 
-            // return false if endingNode is NOT found after visiting ALL connected nodes
+            if (currentNode == endingNode)
+            {
+                return true;
+            }
+
+            foreach (var neighbor in currentNode.Neighbors)
+            {
+                if (neighbor.Color == Color.White)
+                {
+                    var result = DFSVisit(neighbor, endingNode);
+                    if (result)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            currentNode.Color = Color.Black;
 
             return false;
-        }
+
+    }
 
         private void ResetNodeColor()
         {
-            foreach(var node in Nodes)
+            foreach (var node in Nodes)
             {
                 node.Color = Color.White;
             }
